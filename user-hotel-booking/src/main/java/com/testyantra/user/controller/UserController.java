@@ -30,7 +30,7 @@ public class UserController {
 	@GetMapping("/login")
 	public String getAllHotels() {
 		log.info("Inside  the APIS");
-		return "User Module is Working";
+		return "User Module is Working!!!";
 	}
 	/**Getting User Details API */
 	@PostMapping("/getUser")
