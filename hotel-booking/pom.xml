@@ -96,6 +96,9 @@
 				</configuration>
 			</plugin>
 		</plugins>
+
+		<directory>${project.basedir}/local/java/scratch/target</directory>
+
 	</build>
 
 </project>
