@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 public class UserServiceImpl implements UserService {
 	@Autowired
 	UserRepository userRepository;
+	
 	@Autowired
 	RestTemplate restTemplate;
 
@@ -96,11 +97,9 @@ public class UserServiceImpl implements UserService {
 		log.info("Inside the " + methodName);
 		try {
 			if (userRequest != null) {
-//				UserResponse userDetails = userRepository.addReview(userRequest);
 				String url="http://localhost:8080/hotels/feedback";
 				ResponseEntity<HotelResponse> addReview = restTemplate.postForEntity(url, userRequest, HotelResponse.class);
-				System.out.println(addReview.getStatusCodeValue());
-//				String message = userDetails.getMessage();
+//				System.out.println(addReview.getStatusCodeValue());
 				if (addReview.getStatusCodeValue()==200) {
 //					log.info("Added user Deatils" + message);
 					return UserResponse.builder().statusCode(UserConstants.SUCESS_STATUS_CODE)
@@ -109,7 +108,7 @@ public class UserServiceImpl implements UserService {
 				}
 			}
 		} catch (Exception e) {
-			log.error("Exception Occured while fetching the Data " + methodName);
+			log.error("Exception Occured while Adding the Review/Comments " + methodName);
 		}
 		return UserResponse.builder().statusCode(UserConstants.FAIL_STATUS_CODE)
 				.statusDescription(UserConstants.FAIL_STATUS_DESC).build();

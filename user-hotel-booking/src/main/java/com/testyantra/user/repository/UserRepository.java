@@ -11,16 +11,21 @@ import org.springframework.stereotype.Service;
 
 import com.testyantra.user.common.UserConstants;
 import com.testyantra.user.dto.UserDTO;
+import com.testyantra.user.query.UserQuery;
 import com.testyantra.user.request.UserRequest;
 import com.testyantra.user.response.UserResponse;
 
 import lombok.extern.slf4j.Slf4j;
-
+/**
+ * @author Sameer Balehosur
+ *
+ */
 @Service
 @Slf4j
 @SuppressWarnings("unchecked")
 @Component
 public class UserRepository {
+	
 	@Autowired
 	NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -33,7 +38,7 @@ public class UserRepository {
 
 				MapSqlParameterSource params = new MapSqlParameterSource()
 						.addValue("USERID", request.getUserId());
-				List<UserDTO> query = jdbcTemplate.query(UserConstants.GET_USER_DETAILS, params, new BeanPropertyRowMapper<UserDTO>(UserDTO.class));
+				List<UserDTO> query = jdbcTemplate.query(UserQuery.GET_USER_DETAILS, params, new BeanPropertyRowMapper<UserDTO>(UserDTO.class));
 				if(!query.isEmpty()) {
 					return UserResponse.builder().userDetails(query).build();
 				}
@@ -62,7 +67,7 @@ public class UserRepository {
 								.addValue("COMMENTS", request.getComments())
 								.addValue("FID", request.getFId());
 				log.info("Parameters Values "+params.getValues());
-				int update = jdbcTemplate.update(UserConstants.ADD_USER_DETAILS, params);
+				int update = jdbcTemplate.update(UserQuery.ADD_USER_DETAILS, params);
 				if(update>0) {
 					log.info(" User Data Added Done "+params );
 					return UserResponse.builder().Message(UserConstants.DATA_ADDED_MSG).build();
@@ -83,7 +88,7 @@ public class UserRepository {
 					MapSqlParameterSource params = new MapSqlParameterSource()
 							.addValue("USERID", request.getUserId());
 					log.info("Parameters Values "+params.getValues());
-					int update = jdbcTemplate.update(UserConstants.DELETE_USER_DETAILS, params);
+					int update = jdbcTemplate.update(UserQuery.DELETE_USER_DETAILS, params);
 					if(update>0) {
 						log.info(" User Data Deleted Done "+params );
 						return UserResponse.builder().Message(UserConstants.DATA_DELETED_MSG).build();
@@ -108,7 +113,7 @@ public class UserRepository {
 						.addValue("RATINGS", request.getRatings())
 						.addValue("COMMENTS", request.getComments());
 				log.info("Parameters Values "+params.getValues());
-				int update = jdbcTemplate.update(UserConstants.USER_COMMENTS, params);
+				int update = jdbcTemplate.update(UserQuery.USER_COMMENTS, params);
 				if(update>0) {
 					log.info(" User Comments/Review Added to hotel "+params );
 					return UserResponse.builder().Message(UserConstants.USER_REVIEW).build();
